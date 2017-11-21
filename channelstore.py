@@ -292,11 +292,22 @@ class ChannelStore(object):
         arp1call = ""
         arp2call = ""
 
-        for freq in [455.987500,457.012500,457.037500,457.087500,457.137500,457.187500,457.237500,457.487500,459.950000,461.325000,461.375000, 
-                     461.400000,462.275000,462.400000,462.537500,462.562500,462.587500,462.612500,462.637500]:
-            afreq = '{:010.6f}'.format(float(freq))
-            aname = "FRS-"+afreq
-            self.append([aname, afreq, aduplex, aoffset, atone, artonefreq, actonefreq, adtcscode, adtcspol, amode, atstep, askip, acomment, aurcall, arp1call, arp2call])
+        aname = "FRS-"
+        for freq in [(457.0125,457.0125,"C3"),(457.0375,457.0375,"C1"),(457.0875,462.5875,"C2"),(457.1375,462.6375,"C5"),(457.1875,457.1875,"C4"),(457.2375,457.2375,"C6")]:  
+            afreq = '{:010.6f}'.format(float(freq[0]))    
+            offsetval = float(freq[1]) - float(freq[0]) #txfreq - rxfreq = offset value
+            aoffset = '{:8.6f}'.format(abs(offsetval))
+            if freq[0] == freq[1]:
+                aduplex = ""
+            elif offsetval > 0.0001:
+                aduplex = "+"
+            elif offsetval < -0.0001:
+                aduplex = "-"
+            else:
+                aduplex = ""
+            self.append([aname+freq[2], afreq, aduplex, aoffset, atone, artonefreq, actonefreq, adtcscode, adtcspol, amode, atstep, askip, acomment, aurcall, arp1call, arp2call])
+
+
 
         for freq in [450.230000,460.330000,462.130000,462.230000,462.330000,462.430000,462.530000,462.630000,462.730000,462.830000,462.930000, 
                      463.030000,463.130000,463.230000,463.530000,469.950000]:
